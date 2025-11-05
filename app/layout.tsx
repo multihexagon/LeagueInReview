@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.className} font-sans antialiased`}>
-        <TooltipProvider>
+        <TooltipProvider delayDuration={200} skipDelayDuration={100}>
           {children}
         </TooltipProvider>
         <Analytics />

@@ -47,23 +47,23 @@ export function TipsAdvice({ recap }: TipsAdviceProps) {
     {
       icon: Target,
       title: "Farming Excellence",
-      tip: "Practica last-hitting 10 minutos diarios en training tool",
-      description: "Un buen CS es la base de todo carry",
+      tip: "Practice last-hitting 10 minutes daily in training tool",
+      description: "Good CS is the foundation of every carry",
       category: "Fundamentals",
       color: "primary"
     },
     {
       icon: Eye,
       title: "Vision Control",
-      tip: "Compra control wards en cada back, coloca wards proactivamente",
-      description: "Vision wins games - controla objetivos importantes",
+      tip: "Buy control wards on every back, place wards proactively",
+      description: "Vision wins games - control important objectives",
       category: "Map Awareness",
       color: "accent"
     },
     {
       icon: Shield,
       title: "Positioning",
-      tip: "Mantén distancia segura, usa terrain y teammates como shields",
+      tip: "Keep safe distance, use terrain and teammates as shields",
       description: "Better positioning = less deaths = more impact",
       category: "Survival",
       color: "chart-4"
@@ -71,7 +71,7 @@ export function TipsAdvice({ recap }: TipsAdviceProps) {
     {
       icon: Users,
       title: "Team Fighting",
-      tip: "Focus el mismo target que tu equipo, protege tus carries",
+      tip: "Focus the same target as your team, protect your carries",
       description: "Coordination > individual plays in team fights",
       category: "Teamwork",
       color: "secondary"
@@ -149,22 +149,22 @@ export function TipsAdvice({ recap }: TipsAdviceProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group"
+              className="group h-full"
             >
               <InfoTooltip content={tip.description}>
-                <div className="p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/50 transition-all h-full">
-                  <div className="flex items-start gap-4">
+                <div className="p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/50 transition-all h-full min-h-[200px] flex flex-col">
+                  <div className="flex items-start gap-4 flex-1">
                     <div className={`w-12 h-12 rounded-lg bg-${tip.color}/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
                       <Icon className={`w-6 h-6 text-${tip.color}`} />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-lg font-bold">{tip.title}</h3>
-                        <span className={`text-xs px-2 py-1 rounded-full bg-${tip.color}/10 text-${tip.color}`}>
+                    <div className="flex-1 flex flex-col">
+                      <div className="flex items-start flex-wrap gap-2 mb-3">
+                        <h3 className="text-lg font-bold leading-tight">{tip.title}</h3>
+                        <span className={`text-xs px-2 py-1 rounded-full bg-${tip.color}/10 text-${tip.color} flex-shrink-0`}>
                           {tip.category}
                         </span>
                       </div>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
+                      <p className="text-muted-foreground text-sm leading-relaxed flex-1">
                         {tip.tip}
                       </p>
                     </div>
@@ -200,14 +200,14 @@ export function TipsAdvice({ recap }: TipsAdviceProps) {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                  className="p-6 rounded-lg bg-background/50 border border-border/30"
+                  className="p-6 rounded-lg bg-background/50 border border-border/30 h-full min-h-[180px] flex flex-col"
                 >
                   <h4 className="text-lg font-bold text-primary mb-4">{role} Tips</h4>
-                  <ul className="space-y-2">
+                  <ul className="space-y-3 flex-1">
                     {tips.map((tip, tipIndex) => (
-                      <li key={tipIndex} className="flex items-start gap-2">
+                      <li key={tipIndex} className="flex items-start gap-3">
                         <Zap className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-muted-foreground">{tip}</span>
+                        <span className="text-sm text-muted-foreground leading-relaxed">{tip}</span>
                       </li>
                     ))}
                   </ul>
@@ -240,17 +240,17 @@ export function TipsAdvice({ recap }: TipsAdviceProps) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-                className="flex items-start gap-4 p-4 rounded-lg bg-background/30 border border-border/20"
+                className="flex items-start gap-4 p-6 rounded-lg bg-background/30 border border-border/20 min-h-[100px]"
               >
-                <div className="w-8 h-8 rounded-full bg-chart-4/20 flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-chart-4/20 flex items-center justify-center flex-shrink-0">
                   <span className="text-sm font-bold text-chart-4">{index + 1}</span>
                 </div>
-                <div className="flex-1">
-                  <h4 className="font-semibold text-foreground mb-1 capitalize">
+                <div className="flex-1 flex flex-col justify-center">
+                  <h4 className="font-semibold text-foreground mb-2 capitalize leading-tight">
                     {improvement.issue}
                   </h4>
-                  <p className="text-sm text-muted-foreground">
-                    <Lightbulb className="w-4 h-4 inline mr-1 text-accent" />
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    <Lightbulb className="w-4 h-4 inline mr-2 text-accent" />
                     <strong>Training Drill:</strong> {improvement.drill}
                   </p>
                 </div>

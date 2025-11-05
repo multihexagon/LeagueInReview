@@ -209,19 +209,19 @@ export function HeroSection({ summary, topChampion, recap }: HeroSectionProps) {
                 label: "Games", 
                 value: summary.games.toString(), 
                 color: "primary",
-                tooltip: `Has jugado ${summary.games} partidas analizadas. Más partidas = análisis más preciso`
+                tooltip: `You've played ${summary.games} analyzed games. More games = more precise analysis`
               },
               { 
                 label: "Win Rate", 
                 value: `${(summary.win_rate * 100).toFixed(0)}%`, 
                 color: "accent",
-                tooltip: `Tu porcentaje de victorias. +60% = Excelente, 50-60% = Bueno, -50% = Necesita mejora`
+                tooltip: `Your win percentage. 60%+ = Excellent, 50-60% = Good, below 50% = Needs improvement`
               },
               { 
                 label: "Average KDA", 
                 value: summary.avg_kda.toFixed(2), 
                 color: "secondary",
-                tooltip: `Promedio de KDA (Kills+Assists/Deaths). +2.0 = Excelente, 1.0-2.0 = Promedio, -1.0 = Practicar supervivencia`
+                tooltip: `Average KDA (Kills+Assists/Deaths). 2.0+ = Excellent, 1.0-2.0 = Average, below 1.0 = Practice survival`
               },
             ].map((stat, i) => (
             <motion.div
@@ -241,7 +241,7 @@ export function HeroSection({ summary, topChampion, recap }: HeroSectionProps) {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="max-w-xs text-center">{stat.tooltip}</p>
+                  <p className="text-center">{stat.tooltip}</p>
                 </TooltipContent>
               </Tooltip>
             </motion.div>

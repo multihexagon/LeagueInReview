@@ -27,13 +27,13 @@ interface RecentGamesProps {
   matches: Match[]
 }
 
-// Tooltips para métricas de partidas
+// Tooltips for match metrics
 const matchTooltips = {
-  kda: "Kill/Death/Assist ratio. +3.0 = Excelente, 2.0-3.0 = Bueno, 1.0-2.0 = Promedio, -1.0 = Necesita mejora",
-  cs: "Creeps Score - minions eliminados. Importante para el gold income. +150 CS a los 20 min es excelente",
-  vision: "Vision Score - wards colocadas y destruidas. +40 es excelente, 20-40 es bueno, -20 necesita más wards",
-  damage: "Daño total a campeones enemigos. Varía por rol y duración de partida",
-  gold: "Oro total ganado en la partida. Más oro = más items = más poder en teamfights"
+  kda: "Kill/Death/Assist ratio. 3.0+ = Excellent, 2.0-3.0 = Good, 1.0-2.0 = Average, below 1.0 = Needs improvement",
+  cs: "Creep Score - minions killed. Important for gold income. 150+ CS at 20 min is excellent",
+  vision: "Vision Score - wards placed and destroyed. 40+ is excellent, 20-40 is good, below 20 needs more wards",
+  damage: "Total damage to enemy champions. Varies by role and game duration",
+  gold: "Total gold earned in the match. More gold = more items = more power in teamfights"
 }
 
 export function RecentGames({ matches }: RecentGamesProps) {
@@ -262,7 +262,7 @@ export function RecentGames({ matches }: RecentGamesProps) {
                             <HelpCircle className="w-3 h-3 text-muted-foreground/50 cursor-help" />
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p className="max-w-xs">{matchTooltips.kda}</p>
+                            <p>{matchTooltips.kda}</p>
                           </TooltipContent>
                         </Tooltip>
                       </div>
@@ -317,7 +317,7 @@ export function RecentGames({ matches }: RecentGamesProps) {
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p className="max-w-xs">{matchTooltips.damage}</p>
+                        <p>{matchTooltips.damage}</p>
                       </TooltipContent>
                     </Tooltip>
                     <Tooltip>
@@ -332,7 +332,7 @@ export function RecentGames({ matches }: RecentGamesProps) {
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p className="max-w-xs">{matchTooltips.gold}</p>
+                        <p>{matchTooltips.gold}</p>
                       </TooltipContent>
                     </Tooltip>
                   </div>
@@ -351,7 +351,7 @@ export function RecentGames({ matches }: RecentGamesProps) {
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p className="max-w-xs">{matchTooltips.cs}</p>
+                        <p>{matchTooltips.cs}</p>
                       </TooltipContent>
                     </Tooltip>
                     <Tooltip>
@@ -366,7 +366,7 @@ export function RecentGames({ matches }: RecentGamesProps) {
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p className="max-w-xs">{matchTooltips.vision}</p>
+                        <p>{matchTooltips.vision}</p>
                       </TooltipContent>
                     </Tooltip>
                     <div className="p-2 bg-background/20 rounded-lg">

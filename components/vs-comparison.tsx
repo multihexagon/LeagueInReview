@@ -457,15 +457,15 @@ export function VsComparison({ summary, playerName = "You", topChampion, recap }
                                   <TooltipContent>
                                     <p className="max-w-xs text-center">
                                       {stat.label === "Win Rate" && "Porcentaje de victorias. Mayor es mejor"}
-                                      {stat.label === "KDA" && "Kill/Death/Assist ratio. +2.0 es excelente"}
-                                      {stat.label === "Kills" && "Promedio de eliminaciones por partida"}
-                                      {stat.label === "Deaths" && "Promedio de muertes por partida. Menor es mejor"}
-                                      {stat.label === "Assists" && "Promedio de asistencias por partida"}
-                                      {stat.label === "CS/min" && "Minions por minuto. +7 es excelente"}
-                                      {stat.label === "Damage/min" && "Daño a campeones por minuto"}
-                                      {stat.label === "Gold" && "Oro promedio por partida"}
-                                      {stat.label === "Vision" && "Vision Score promedio. +40 es excelente"}
-                                      {!["Win Rate", "KDA", "Kills", "Deaths", "Assists", "CS/min", "Damage/min", "Gold", "Vision"].includes(stat.label) && "Métrica de rendimiento comparativa"}
+                                      {stat.label === "KDA" && "Kill/Death/Assist ratio. 2.0+ is excellent"}
+                                      {stat.label === "Kills" && "Average eliminations per game"}
+                                      {stat.label === "Deaths" && "Average deaths per game. Lower is better"}
+                                      {stat.label === "Assists" && "Average assists per game"}
+                                      {stat.label === "CS/min" && "Minions per minute. 7+ is excellent"}
+                                      {stat.label === "Damage/min" && "Damage to champions per minute"}
+                                      {stat.label === "Gold" && "Average gold per game"}
+                                      {stat.label === "Vision" && "Average Vision Score. 40+ is excellent"}
+                                      {!["Win Rate", "KDA", "Kills", "Deaths", "Assists", "CS/min", "Damage/min", "Gold", "Vision"].includes(stat.label) && "Comparative performance metric"}
                                     </p>
                                   </TooltipContent>
                                 </Tooltip>

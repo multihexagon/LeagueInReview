@@ -12,35 +12,35 @@ interface InfoTooltipProps {
 
 export function InfoTooltip({ content, children, side = "top", className = "" }: InfoTooltipProps) {
   return (
-    <Tooltip>
+    <Tooltip delayDuration={200}>
       <TooltipTrigger asChild>
-        <div className={`relative group ${className}`}>
+        <div className={`inline-flex items-center gap-1 group cursor-help ${className}`}>
           {children}
-          <HelpCircle className="w-3 h-3 text-muted-foreground/50 hover:text-primary transition-colors cursor-help group-hover:text-primary" />
+          <HelpCircle className="w-4 h-4 text-muted-foreground/60 hover:text-primary transition-all duration-200 hover:scale-110 group-hover:text-primary" />
         </div>
       </TooltipTrigger>
-      <TooltipContent side={side}>
-        <p className="max-w-xs text-center text-sm">{content}</p>
+      <TooltipContent side={side} className="max-w-sm">
+        <p className="text-sm leading-relaxed">{content}</p>
       </TooltipContent>
     </Tooltip>
   )
 }
 
-// Tooltips predefinidos para métricas comunes de League of Legends
+// Predefined tooltips for common League of Legends metrics
 export const gameTooltips = {
-  winRate: "Tu porcentaje de victorias. +60% es excelente, 50-60% es bueno, -50% necesita mejora",
-  kda: "Kill/Death/Assist ratio. +2.0 es excelente, 1.0-2.0 es promedio, -1.0 necesita trabajar en supervivencia",
-  csPerMin: "Minions eliminados por minuto. +7 es excelente, 5-7 es bueno, -5 practica farming en training tool",
-  visionScore: "Vision Score - wards colocadas y destruidas. +40 es excelente, 20-40 es bueno, -20 necesita más wards",
-  damagePerMin: "Daño a campeones por minuto. Varía por rol: ADC/Mid +600, Top/Jungle +400, Support +200",
-  goldEarned: "Oro promedio por partida. Relacionado con farming, kills y objetivos. Más oro = más items = más poder",
-  killParticipation: "Porcentaje de kills del equipo en las que participaste. +70% es excelente para la mayoría de roles",
-  averageKills: "Promedio de eliminaciones por partida. Varía por rol y estilo de juego",
-  averageDeaths: "Promedio de muertes por partida. Menos muertes = mejor posicionamiento y supervivencia",
-  averageAssists: "Promedio de asistencias por partida. Más asistencias = mejor trabajo en equipo",
-  firstBlood: "Porcentaje de partidas donde conseguiste la primera eliminación. Buen indicador de presencia en early game",
-  multikills: "Eliminaciones múltiples (Double kills, Triple kills, etc.). Indicador de capacidad de carry",
-  objectiveControl: "Participación en objetivos importantes (Dragones, Baron, Torres). Clave para ganar partidas"
+  winRate: "Your win percentage. 60%+ is excellent, 50-60% is good, below 50% needs improvement",
+  kda: "Kill/Death/Assist ratio. 2.0+ is excellent, 1.0-2.0 is average, below 1.0 needs survival work",
+  csPerMin: "Minions killed per minute. 7+ is excellent, 5-7 is good, below 5 practice farming in training tool",
+  visionScore: "Vision Score - wards placed and destroyed. 40+ is excellent, 20-40 is good, below 20 needs more wards",
+  damagePerMin: "Damage to champions per minute. Varies by role: ADC/Mid 600+, Top/Jungle 400+, Support 200+",
+  goldEarned: "Average gold per game. Related to farming, kills and objectives. More gold = more items = more power",
+  killParticipation: "Percentage of team kills you participated in. 70%+ is excellent for most roles",
+  averageKills: "Average eliminations per game. Varies by role and playstyle",
+  averageDeaths: "Average deaths per game. Fewer deaths = better positioning and survival",
+  averageAssists: "Average assists per game. More assists = better teamwork",
+  firstBlood: "Percentage of games where you got first blood. Good indicator of early game presence",
+  multikills: "Multiple eliminations (Double kills, Triple kills, etc.). Indicator of carry potential",
+  objectiveControl: "Participation in major objectives (Dragons, Baron, Towers). Key to winning games"
 }
 
 // Componente específico para métricas de juego con tooltips predefinidos

@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Trophy, TrendingUp, Zap, Target, Award, Flame, HelpCircle, Sparkles, Crown } from "lucide-react"
+import { Trophy, TrendingUp, Zap, Target, Award, Flame, Sparkles, Crown } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 
 interface HighlightsSectionProps {
@@ -83,7 +83,13 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
   const bestKDA = hasMatches && validMatches.length > 0 ? Math.max(...validMatches.map(match => match.kda)) : summary.avg_kda
   const totalDamage = hasMatches ? validMatches.reduce((sum, match) => sum + match.damage_dealt, 0) : summary.avg_damage_dealt * summary.games
   const totalGold = hasMatches ? validMatches.reduce((sum, match) => sum + match.gold_earned, 0) : summary.avg_gold * summary.games
-  const perfectGames = hasMatches ? validMatches.filter(match => match.deaths === 0).length : Math.round(summary.games * 0.1)
+  // Perfect game = 0 deaths + KDA >= 3.0 + win + good CS (>= 5 CS/min)
+  const perfectGames = hasMatches ? validMatches.filter(match => 
+    match.deaths === 0 && 
+    match.kda >= 3.0 && 
+    match.win && 
+    match.cs_per_min >= 5
+  ).length : Math.round(summary.games * 0.05)
   const highKillGames = hasMatches ? validMatches.filter(match => match.kills >= 10).length : Math.round(summary.games * 0.3)
 
   // Generar highlights dinámicos usando las tendencias y fortalezas del recap
@@ -192,7 +198,6 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
     { icon: Flame, label: "10+ Kill Games", count: highKillGames },
     { icon: Award, label: "Perfect Games", count: perfectGames },
     // Nuevos achievements basados en recap
-    ...(recap.style ? [{ icon: Sparkles, label: "Play Style", count: recap.style.charAt(0).toUpperCase() + recap.style.slice(1) }] : []),
     ...(recap.recommended_roles && recap.recommended_roles.length > 0 ? [{ icon: Crown, label: "Best Role", count: recap.recommended_roles[0] }] : []),
     ...(recap.confidence ? [{ icon: TrendingUp, label: "AI Confidence", count: recap.confidence.charAt(0).toUpperCase() + recap.confidence.slice(1) }] : []),
   ].slice(0, 6) // Limitar a máximo 6 achievements
@@ -261,19 +266,25 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="grid grid-cols-2 md:grid-cols-4 gap-6"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 max-w-7xl mx-auto"
       >
         {achievements.map((achievement, index) => {
           const Icon = achievement.icon
           // Tooltips específicos para cada achievement
           const tooltipContent = achievement.label === "Total Wins" ? 
-            `Has ganado ${achievement.count} partidas. ¡Sigue así para mejorar tu winrate!` :
+            `You've won ${achievement.count} games. Keep it up to improve your win rate!` :
             achievement.label === "Best KDA" ?
-            `Tu mejor KDA fue ${achievement.count}. KDA alto indica excelente rendimiento en esa partida` :
+            `Your best KDA was ${achievement.count}. High KDA indicates excellent performance in that match` :
             achievement.label === "Perfect Games" ?
-            `Partidas sin muertes: ${achievement.count}. Indica excelente posicionamiento y supervivencia` :
+            `Perfect games achieved: ${achievement.count}. A perfect game requires: 0 deaths, 3.0+ KDA, winning the match, and 5+ CS/min. This shows exceptional skill, positioning, and game impact.` :
             achievement.label === "High Kill Games" ?
-            `Partidas con 10+ eliminaciones: ${achievement.count}. Muestra tu potencial de carry` :
+            `Games with 10+ eliminations: ${achievement.count}. Shows your carry potential` :
+            achievement.label === "Play Style" ?
+            `Your AI-identified playstyle: ${achievement.count}. This affects how you approach matches and team fights` :
+            achievement.label === "Best Role" ?
+            `Your recommended role: ${achievement.count}. Based on your performance patterns and preferences` :
+            achievement.label === "AI Confidence" ?
+            `AI analysis confidence level: ${achievement.count}. Higher confidence means more reliable insights` :
             `${achievement.label}: ${achievement.count}`
           
           return (
@@ -284,14 +295,16 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
               whileHover={{ scale: 1.1 }}
+              className="w-full"
             >
               <InfoTooltip content={tooltipContent}>
-                <div className="p-6 rounded-2xl glass-card text-center group cursor-pointer">
+                <div className="p-6 rounded-2xl glass-card text-center group cursor-pointer flex flex-col justify-center w-[180px] h-[160px] mx-auto">
                   <Icon className="w-8 h-8 text-primary mx-auto mb-3 group-hover:scale-125 transition-transform" />
-                  <div className="text-3xl font-black text-foreground mb-1">{achievement.count}</div>
-                  <div className="flex items-center justify-center gap-1">
-                    <div className="text-xs text-muted-foreground uppercase tracking-wider">{achievement.label}</div>
-                    <HelpCircle className="w-3 h-3 text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="text-2xl md:text-3xl font-black text-foreground mb-2">{achievement.count}</div>
+                  <div className={`text-muted-foreground uppercase tracking-wider font-medium truncate px-1 ${
+                    achievement.label === "Play Style" ? "text-xs" : "text-sm"
+                  }`}>
+                    {achievement.label}
                   </div>
                 </div>
               </InfoTooltip>
@@ -314,7 +327,7 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
             <p className="text-lg text-muted-foreground">AI-powered advice you can apply immediately</p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {recap.actionable_advice.map((advice, index) => (
               <motion.div
                 key={index}
@@ -323,14 +336,14 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
                 whileHover={{ scale: 1.05 }}
-                className="p-6 rounded-2xl glass-card hover:border-accent/50 transition-all"
+                className="p-8 rounded-2xl glass-card hover:border-accent/50 transition-all h-full min-h-[150px] flex items-center w-full max-w-[400px] mx-auto"
               >
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-                    <span className="text-sm font-bold text-accent">{index + 1}</span>
+                <div className="flex items-start gap-5 w-full">
+                  <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                    <span className="text-base font-bold text-accent">{index + 1}</span>
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm text-foreground leading-relaxed">{advice}</p>
+                    <p className="text-base text-foreground leading-relaxed">{advice}</p>
                   </div>
                 </div>
               </motion.div>

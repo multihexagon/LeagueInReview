@@ -19,16 +19,16 @@ interface AIInsightsProps {
   }
 }
 
-// Tooltips informativos para cada tipo de insight
+// Informative tooltips for each type of insight
 const insightTooltips = {
-  strength: "Estas son tus fortalezas identificadas por IA. Aprovéchalas en futuras partidas",
-  improvement: "Áreas de mejora detectadas. Los drills te ayudarán a practicar específicamente",
-  strategy: "Consejos tácticos para tu próxima partida basados en tu estilo de juego",
-  roles: "Roles recomendados basados en tu rendimiento y preferencias de juego",
-  trends: "Patrones de rendimiento detectados en tus partidas recientes",
-  champions: "Campeones recomendados que se adaptan a tu estilo de juego actual",
-  actionable: "Consejos prácticos que puedes aplicar inmediatamente en tus próximas partidas",
-  style: "Tu estilo de juego identificado por IA basado en patrones de comportamiento"
+  strength: "These are your AI-identified strengths. Leverage them in future matches",
+  improvement: "Detected areas for improvement. The drills will help you practice specifically",
+  strategy: "Tactical advice for your next match based on your playstyle",
+  roles: "Recommended roles based on your performance and gameplay preferences",
+  trends: "Performance patterns detected in your recent matches",
+  champions: "Recommended champions that suit your current playstyle",
+  actionable: "Practical advice you can apply immediately in your next matches",
+  style: "Your AI-identified playstyle based on behavioral patterns"
 }
 
 export function AIInsights({ recap }: AIInsightsProps) {
@@ -250,7 +250,7 @@ export function AIInsights({ recap }: AIInsightsProps) {
                 <HelpCircle className="w-4 h-4 text-muted-foreground hover:text-primary cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                <p className="max-w-xs">{insightTooltips.actionable}</p>
+                <p>{insightTooltips.actionable}</p>
               </TooltipContent>
             </Tooltip>
           </h3>
@@ -284,7 +284,7 @@ export function AIInsights({ recap }: AIInsightsProps) {
                 <HelpCircle className="w-4 h-4 text-muted-foreground hover:text-primary cursor-help" />
               </TooltipTrigger>
               <TooltipContent>
-                <p className="max-w-xs">{insightTooltips.improvement}</p>
+                <p>{insightTooltips.improvement}</p>
               </TooltipContent>
             </Tooltip>
           </h3>

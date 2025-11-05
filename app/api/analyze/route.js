@@ -73,6 +73,7 @@ export async function POST(req) {
         body: JSON.stringify({
           summonerName: summonerName.trim(),
           tag: tag.trim(),
+          year: 2025
         }),
         signal: controller.signal,
       });
