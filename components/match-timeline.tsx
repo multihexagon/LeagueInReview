@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface MatchData {
   id: string
@@ -139,9 +140,28 @@ export function MatchTimeline({ matches, title }: MatchTimelineProps) {
                     </div>
                     
                     <div className="flex items-center gap-2">
-                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${getPerformanceColor(match.performance || 0)}`}>
-                        {match.performance || 0}%
-                      </div>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className={`px-2 py-1 rounded-full text-xs font-medium cursor-help ${getPerformanceColor(match.performance || 0)}`}>
+                            {match.performance || 0}%
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-sm">
+                            <div className="font-medium mb-1">Performance Score</div>
+                            <div className="text-xs text-muted-foreground">
+                              Formula: ((Kills + Assists) / Deaths) × 20
+                            </div>
+                            <div className="text-xs text-muted-foreground mt-1">
+                              • 300%+ = Exceptional<br/>
+                              • 200-299% = Excellent<br/>
+                              • 100-199% = Good<br/>
+                              • 50-99% = Average<br/>
+                              • 0-49% = Needs improvement
+                            </div>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
                       <div className="text-xs text-muted-foreground">
                         {match.timestamp || 'Unknown'}
                       </div>
