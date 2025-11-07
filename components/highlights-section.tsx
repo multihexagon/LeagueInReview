@@ -6,15 +6,54 @@ import { InfoTooltip } from "@/components/ui/info-tooltip"
 
 interface HighlightsSectionProps {
   recap: {
-    strengths: string
-    improvements: { issue: string; drill: string }[]
-    next_match_tip: string
-    confidence: string
-    style?: string
-    trends?: string[]
-    recommended_roles?: string[]
-    recommended_champions?: string[]
-    actionable_advice?: string[]
+    executive_summary: string
+    win_condition_analysis: {
+      what_player_does_well_in_wins: string[]
+      what_goes_wrong_in_losses: string[]
+      key_difference: string
+    }
+    skill_ceiling_assessment: {
+      current_level: string
+      mechanical_ceiling: string
+      game_knowledge_ceiling: string
+      limiting_factor: string
+      realistic_peak: string
+    }
+    improvement_roadmap: {
+      immediate_priority: {
+        focus: string
+        reason: string
+        expected_result: string
+        timeline: string
+      }
+      next_priorities: Array<{
+        focus: string
+        reason: string
+        timeline: string
+      }>
+    }
+    personalized_champion_recommendations: Array<{
+      champion: string
+      fit_score: string
+      why_good_fit: string
+      learning_curve: string
+      expected_win_rate: string
+    }>
+    habits_to_break: Array<{
+      bad_habit: string
+      evidence: string
+      replacement_habit: string
+      tracking_metric: string
+    }>
+    daily_practice_routine: {
+      warm_up: string
+      skill_drill: string
+      ranked_focus: string
+      post_game: string
+    }
+    red_flags: string[]
+    green_flags: string[]
+    coach_notes: string
   }
   matches: Array<{
     champion: string
@@ -96,12 +135,12 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
   const generateDynamicHighlights = () => {
     const dynamicHighlights = []
     
-    // Highlight principal basado en la primera fortaleza
-    if (recap.strengths && recap.strengths.length > 0) {
+    // Highlight principal basado en green flags
+    if (recap.green_flags && recap.green_flags.length > 0) {
       dynamicHighlights.push({
         icon: Trophy,
         title: "Top Strength",
-        subtitle: recap.strengths,
+        subtitle: recap.green_flags[0],
         description: "Your strongest point this season",
         stats: "AI Insight",
         gradient: "from-primary to-accent",
@@ -109,29 +148,29 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
       })
     }
 
-    // Highlight de tendencias si están disponibles
-    if (recap.trends && recap.trends.length > 0) {
+    // Highlight de mejoras inmediatas
+    if (recap.improvement_roadmap?.immediate_priority) {
       dynamicHighlights.push({
         icon: TrendingUp,
-        title: "Performance Trend",
-        subtitle: recap.trends[0],
-        description: "Key pattern in your gameplay",
-        stats: "Trending",
+        title: "Improvement Focus",
+        subtitle: recap.improvement_roadmap.immediate_priority.focus,
+        description: "Priority area for development",
+        stats: "Priority",
         gradient: "from-accent to-secondary",
-        date: "Current"
+        date: "Immediate"
       })
     }
 
-    // Highlight del estilo de juego
-    if (recap.style) {
+    // Highlight del executive summary
+    if (recap.executive_summary) {
       dynamicHighlights.push({
         icon: Flame,
-        title: "Play Style",
-        subtitle: `${recap.style.charAt(0).toUpperCase() + recap.style.slice(1)} Player`,
-        description: "Your unique approach to the game",
-        stats: "Personality",
+        title: "Player Profile",
+        subtitle: "Strategic Player",
+        description: recap.executive_summary.split('.')[0] + '.',
+        stats: "Analysis",
         gradient: "from-secondary to-primary",
-        date: "Analysis"
+        date: "Overview"
       })
     }
 
@@ -175,7 +214,7 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
         icon: TrendingUp,
         title: "Next Match",
         subtitle: "Coach Tip", 
-        description: recap.next_match_tip,
+        description: recap.coach_notes || "Focus on your fundamentals",
         stats: "AI Recommendation",
         gradient: "from-primary to-primary/50",
         date: "To improve",
@@ -198,8 +237,7 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
     { icon: Flame, label: "10+ Kill Games", count: highKillGames },
     { icon: Award, label: "Perfect Games", count: perfectGames },
     // Nuevos achievements basados en recap
-    ...(recap.recommended_roles && recap.recommended_roles.length > 0 ? [{ icon: Crown, label: "Best Role", count: recap.recommended_roles[0] }] : []),
-    ...(recap.confidence ? [{ icon: TrendingUp, label: "AI Confidence", count: recap.confidence.charAt(0).toUpperCase() + recap.confidence.slice(1) }] : []),
+    ...(recap.red_flags && recap.red_flags.length > 0 ? [{ icon: Crown, label: "Areas to Fix", count: recap.red_flags.length }] : []),
   ].slice(0, 6) // Limitar a máximo 6 achievements
 
   return (
@@ -313,8 +351,8 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
         })}
       </motion.div>
 
-      {/* Sección de Actionable Advice */}
-      {recap.actionable_advice && recap.actionable_advice.length > 0 && (
+      {/* Sección de Red Flags como advice */}
+      {recap.red_flags && recap.red_flags.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -324,11 +362,11 @@ export function HighlightsSection({ recap, matches, summary }: HighlightsSection
         >
           <div className="text-center mb-12">
             <h3 className="text-3xl md:text-4xl font-bold mb-4">Ready to Level Up?</h3>
-            <p className="text-lg text-muted-foreground">AI-powered advice you can apply immediately</p>
+            <p className="text-lg text-muted-foreground">AI-identified areas for improvement</p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {recap.actionable_advice.map((advice, index) => (
+            {recap.red_flags.slice(0, 6).map((advice: string, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

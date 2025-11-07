@@ -1,129 +1,140 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Brain, TrendingUp, Target, AlertTriangle, Lightbulb, BookOpen, HelpCircle, Sparkles, Crown, Zap } from "lucide-react"
+import { Brain, TrendingUp, Target, AlertTriangle, Lightbulb, BookOpen, HelpCircle, Crown, CheckCircle, Users, MessageSquare, Clock } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { Card } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 
 
 interface AIInsightsProps {
   recap: {
-    strengths: string
-    improvements: { issue: string; drill: string }[]
-    next_match_tip: string
-    confidence: string
-    style?: string
-    trends?: string[]
-    recommended_roles?: string[]
-    recommended_champions?: string[]
-    actionable_advice?: string[]
+    executive_summary: string
+    win_condition_analysis: {
+      what_player_does_well_in_wins: string[]
+      what_goes_wrong_in_losses: string[]
+      key_difference: string
+    }
+    skill_ceiling_assessment: {
+      current_level: string
+      mechanical_ceiling: string
+      game_knowledge_ceiling: string
+      limiting_factor: string
+      realistic_peak: string
+    }
+    improvement_roadmap: {
+      immediate_priority: {
+        focus: string
+        reason: string
+        expected_result: string
+        timeline: string
+      }
+      next_priorities: Array<{
+        focus: string
+        reason: string
+        timeline: string
+      }>
+    }
+    personalized_champion_recommendations: Array<{
+      champion: string
+      fit_score: string
+      why_good_fit: string
+      learning_curve: string
+      expected_win_rate: string
+    }>
+    habits_to_break: Array<{
+      bad_habit: string
+      evidence: string
+      replacement_habit: string
+      tracking_metric: string
+    }>
+    daily_practice_routine: {
+      warm_up: string
+      skill_drill: string
+      ranked_focus: string
+      post_game: string
+    }
+    red_flags: string[]
+    green_flags: string[]
+    coach_notes: string
   }
 }
 
 // Informative tooltips for each type of insight
 const insightTooltips = {
-  strength: "These are your AI-identified strengths. Leverage them in future matches",
-  improvement: "Detected areas for improvement. The drills will help you practice specifically",
-  strategy: "Tactical advice for your next match based on your playstyle",
-  roles: "Recommended roles based on your performance and gameplay preferences",
-  trends: "Performance patterns detected in your recent matches",
-  champions: "Recommended champions that suit your current playstyle",
-  actionable: "Practical advice you can apply immediately in your next matches",
-  style: "Your AI-identified playstyle based on behavioral patterns"
+  executive_summary: "AI's overall assessment of your performance and potential areas for growth",
+  skill_ceiling: "Analysis of your current rank potential based on mechanical and strategic skills",
+  red_flags: "Critical areas that are limiting your climb and need immediate attention",
+  green_flags: "Your strongest assets that you should continue to leverage in ranked games",
+  coach_notes: "Professional coaching insights tailored specifically to your gameplay patterns",
+  win_conditions: "What separates your wins from losses - key patterns identified by AI analysis"
 }
 
 export function AIInsights({ recap }: AIInsightsProps) {
   if (!recap) return null
 
-  // Generar insights dinámicos basados en el recap de Bedrock
+  // Main insights usando la nueva estructura
   const insights = [
-    // Fortaleza principal (ahora es un string)
+    // Executive Summary - siempre el primero
     {
       icon: Brain,
-      title: "Key Strengths",
-      description: recap.strengths,
-      highlight: "Strong Points",
+      title: "Executive Summary",
+      description: recap.executive_summary,
+      highlight: "AI Assessment",
       color: "primary",
-      type: "strength" as const
+      type: "executive" as const
     },
-    
-    // Style insight (si está disponible)
-    ...(recap.style ? [{
-      icon: Sparkles,
-      title: "Play Style",
-      description: `Your identified play style is ${recap.style}. This affects how you approach matches and team fights.`,
-      highlight: recap.style.charAt(0).toUpperCase() + recap.style.slice(1),
-      color: "secondary",
-      type: "style" as const
-    }] : []),
-    
-    // Áreas de mejora principales (solo la primera para hacer espacio)
-    ...recap.improvements.slice(0, 1).map((improvement, index) => ({
+
+    // Skill Ceiling Assessment
+    {
+      icon: Target,
+      title: "Skill Ceiling Analysis",
+      description: `Current Level: ${recap.skill_ceiling_assessment.current_level}. Realistic Peak: ${recap.skill_ceiling_assessment.realistic_peak}. Limiting Factor: ${recap.skill_ceiling_assessment.limiting_factor}`,
+      highlight: "Potential Analysis",
+      color: "chart-1",
+      type: "ceiling" as const
+    },
+
+    // Red Flags - áreas críticas
+    ...(recap.red_flags && recap.red_flags.length > 0 ? [{
       icon: AlertTriangle,
-      title: "Priority Improvement",
-      description: `Focus on ${improvement.issue}: ${improvement.drill}`,
-      highlight: improvement.issue.charAt(0).toUpperCase() + improvement.issue.slice(1),
-      color: "chart-4",
-      type: "improvement" as const,
-      drill: improvement.drill
-    })),
-
-    // Recommended Champions insight
-    ...(recap.recommended_champions && recap.recommended_champions.length > 0 ? [{
-      icon: Crown,
-      title: "Recommended Champions",
-      description: `Based on your play style and performance, try: ${recap.recommended_champions.slice(0, 3).join(', ')}`,
-      highlight: "Perfect Match",
-      color: "chart-5",
-      type: "champions" as const
+      title: "Critical Issues",
+      description: `Areas limiting your climb: ${recap.red_flags.join(', ')}. These need immediate attention to unlock your potential.`,
+      highlight: "Needs Focus",
+      color: "destructive",
+      type: "red_flags" as const
     }] : []),
 
-    // Actionable Advice insight
-    ...(recap.actionable_advice && recap.actionable_advice.length > 0 ? [{
-      icon: Zap,
-      title: "Quick Wins",
-      description: recap.actionable_advice[0], // Mostrar el primer consejo
-      highlight: "Immediate Impact",
-      color: "accent",
-      type: "actionable" as const
-    }] : [])
-  ].slice(0, 6) // Aumentar a 6 insights máximo
+    // Green Flags - fortalezas
+    ...(recap.green_flags && recap.green_flags.length > 0 ? [{
+      icon: CheckCircle,
+      title: "Key Strengths",
+      description: `Your advantages: ${recap.green_flags.join(', ')}. Continue leveraging these in ranked games.`,
+      highlight: "Keep It Up",
+      color: "chart-2",
+      type: "green_flags" as const
+    }] : []),
 
-  // Agregar insight de próxima partida si hay espacio
-  if (insights.length < 4 && recap.next_match_tip) {
-    insights.push({
-      icon: Lightbulb,
-      title: "Next Match Strategy",
-      description: recap.next_match_tip,
-      highlight: `${recap.confidence.charAt(0).toUpperCase() + recap.confidence.slice(1)} Confidence`,
-      color: "chart-5",
-      type: "improvement" as const,
-      drill: "Apply this strategy in your next game"
-    })
-  }
+    // Win Condition Analysis
+    {
+      icon: Users,
+      title: "Win Conditions",
+      description: `Key Difference: ${recap.win_condition_analysis.key_difference}. In wins you excel at: ${recap.win_condition_analysis.what_player_does_well_in_wins.join(', ')}.`,
+      highlight: "Victory Pattern",
+      color: "chart-4",
+      type: "win_analysis" as const
+    },
 
-  // Agregar insight de roles recomendados si hay espacio y datos disponibles
-  if (insights.length < 4 && recap.recommended_roles && recap.recommended_roles.length > 0) {
-    insights.push({
-      icon: BookOpen,
-      title: "Recommended Roles",
-      description: `You excel at: ${recap.recommended_roles.join(', ')}`,
-      highlight: "Role Mastery",
-      color: "accent",
-      type: "strength" as const
-    })
-  }
-
-  // Agregar insight de tendencias si hay espacio y datos disponibles
-  if (insights.length < 4 && recap.trends && recap.trends.length > 0) {
-    insights.push({
-      icon: TrendingUp,
-      title: "Performance Pattern",
-      description: recap.trends[0],
-      highlight: "Current Trend",
+    // Coach Notes
+    {
+      icon: MessageSquare,
+      title: "Coach Notes",
+      description: recap.coach_notes,
+      highlight: "Professional Insight",
       color: "secondary",
-      type: "strength" as const
-    })
-  }
+      type: "coach" as const
+    },
+  ].slice(0, 6) // Máximo 6 insights
 
   return (
     <section className="py-24 px-4 container mx-auto">
@@ -136,12 +147,7 @@ export function AIInsights({ recap }: AIInsightsProps) {
       >
         <h2 className="text-4xl md:text-5xl font-bold mb-4">AI-Powered Insights</h2>
         <p className="text-xl text-muted-foreground">
-          Personalized analysis from your gameplay data
-          {recap.style && (
-            <span className="ml-2 px-3 py-1 text-sm bg-primary/10 text-primary rounded-full">
-              {recap.style.charAt(0).toUpperCase() + recap.style.slice(1)} Player
-            </span>
-          )}
+          Comprehensive AI-powered analysis of your gameplay
         </p>
       </motion.div>
 
@@ -160,146 +166,181 @@ export function AIInsights({ recap }: AIInsightsProps) {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
-              <div className="p-6 rounded-2xl bg-card border border-border/50 hover:border-primary/50 transition-all group h-full shadow-sm">
-                <div className="flex items-start gap-4 h-full">
-                  <div className={`w-12 h-12 rounded-lg ${bgColorClass} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                    <Icon className={`w-6 h-6 ${colorClass}`} />
+              <Card className="p-8 bg-card border border-border/50 hover:border-primary/50 transition-all group h-full shadow-sm">
+                <div className="flex items-start gap-6 h-full">
+                  <div className={`w-16 h-16 rounded-xl ${bgColorClass} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                    <Icon className={`w-8 h-8 ${colorClass}`} />
                   </div>
                   <div className="flex-1 min-h-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xl font-bold">{insight.title}</h3>
+                    <div className="flex items-center gap-3 mb-4">
+                      <h3 className="text-2xl font-bold">{insight.title}</h3>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <HelpCircle className="w-4 h-4 text-muted-foreground hover:text-primary cursor-help" />
+                          <HelpCircle className="w-5 h-5 text-muted-foreground hover:text-primary cursor-help" />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="max-w-xs">
-                            {insight.type === 'strength' && insightTooltips.strength}
-                            {insight.type === 'improvement' && insightTooltips.improvement}
-                            {insight.type === 'style' && insightTooltips.style}
-                            {insight.type === 'champions' && insightTooltips.champions}
-                            {insight.type === 'actionable' && insightTooltips.actionable}
+                          <p className="max-w-sm text-sm">
+                            {insight.type === 'executive' && insightTooltips.executive_summary}
+                            {insight.type === 'ceiling' && insightTooltips.skill_ceiling}
+                            {insight.type === 'red_flags' && insightTooltips.red_flags}
+                            {insight.type === 'green_flags' && insightTooltips.green_flags}
+                            {insight.type === 'win_analysis' && insightTooltips.win_conditions}
+                            {insight.type === 'coach' && insightTooltips.coach_notes}
                           </p>
                         </TooltipContent>
                       </Tooltip>
                     </div>
-                    <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-3">
+                    <p className="text-foreground mb-6 leading-relaxed text-base">
                       {insight.description}
                     </p>
                     
-                    {/* Drill/tip específico para mejoras */}
-                    {insight.type === "improvement" && (
-                      <div className="mb-4 p-3 rounded-lg bg-muted/50 border-l-4 border-primary">
-                        <p className="text-sm font-medium text-foreground">
-                          💡 Training Drill: {(insight as any).drill || "Practice regularly to improve"}
-                        </p>
-                      </div>
-                    )}
+
                     
-                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${bgColorClass} ${borderColorClass} border`}>
-                      <span className={`text-sm font-medium ${colorClass}`}>
-                        {insight.highlight}
-                      </span>
-                    </div>
+                    <Badge variant="secondary" className="text-sm px-3 py-1">
+                      {insight.highlight}
+                    </Badge>
                   </div>
                 </div>
-              </div>
+              </Card>
             </motion.div>
           )
         })}
       </div>
 
-      {/* Sección adicional con todas las tendencias si hay más de una */}
-      {recap.trends && recap.trends.length > 1 && (
+      {/* Improvement Roadmap Section */}
+      {recap.improvement_roadmap && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-12 p-6 rounded-2xl bg-card/50 border border-border/50"
+          className="mt-16"
         >
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-accent" />
-            All Performance Trends
-          </h3>
-          <div className="grid md:grid-cols-2 gap-3">
-            {recap.trends.map((trend, index) => (
-              <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
-                <div className="w-2 h-2 rounded-full bg-accent flex-shrink-0" />
-                <span className="text-sm text-muted-foreground">{trend}</span>
+          <h3 className="text-3xl font-bold mb-12 text-center">Improvement Roadmap</h3>
+          
+          {/* Immediate Priority */}
+          <div className="mb-12">
+            <div className="p-8 rounded-2xl bg-gradient-to-r from-destructive/5 to-primary/5 border border-primary/20">
+              <div className="flex items-start gap-6">
+                <div className="p-4 rounded-xl bg-primary/10">
+                  <Clock className="h-8 w-8 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <h4 className="text-2xl font-semibold">Immediate Priority</h4>
+                    <span className="px-3 py-2 text-sm bg-destructive/20 text-destructive rounded-lg font-medium">
+                      {recap.improvement_roadmap.immediate_priority.timeline}
+                    </span>
+                  </div>
+                  <h5 className="text-xl font-medium text-primary mb-4">
+                    {recap.improvement_roadmap.immediate_priority.focus}
+                  </h5>
+                  <p className="text-foreground mb-3 text-base leading-relaxed">
+                    <strong>Why:</strong> {recap.improvement_roadmap.immediate_priority.reason}
+                  </p>
+                  <p className="text-foreground text-base leading-relaxed">
+                    <strong>Expected Result:</strong> {recap.improvement_roadmap.immediate_priority.expected_result}
+                  </p>
+                </div>
               </div>
-            ))}
+            </div>
           </div>
+
+          {/* Next Priorities */}
+          {recap.improvement_roadmap.next_priorities && recap.improvement_roadmap.next_priorities.length > 0 && (
+            <div className="grid md:grid-cols-2 gap-10">
+              {recap.improvement_roadmap.next_priorities.map((priority, index) => (
+                <div key={index} className="p-10 rounded-2xl bg-card/50 border border-border/30">
+                  <div className="flex items-start gap-6">
+                    <div className="p-4 rounded-lg bg-chart-3/10">
+                      <TrendingUp className="h-7 w-7 text-chart-3" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-4">
+                        <h5 className="text-xl font-semibold">{priority.focus}</h5>
+                        <span className="px-3 py-2 text-sm bg-muted text-muted-foreground rounded-lg">
+                          {priority.timeline}
+                        </span>
+                      </div>
+                      <p className="text-base text-foreground leading-relaxed">{priority.reason}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </motion.div>
       )}
 
-      {/* Sección de consejos accionables */}
-      {recap.actionable_advice && recap.actionable_advice.length > 1 && (
+      {/* Habits to Break Section */}
+      {recap.habits_to_break && recap.habits_to_break.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-8 p-6 rounded-2xl bg-card/50 border border-border/50"
+          className="mt-16 p-10 rounded-2xl bg-card/50 border border-border/50"
         >
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <Zap className="w-5 h-5 text-accent" />
-            Actionable Advice
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <HelpCircle className="w-4 h-4 text-muted-foreground hover:text-primary cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{insightTooltips.actionable}</p>
-              </TooltipContent>
-            </Tooltip>
+          <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
+            <AlertTriangle className="w-8 h-8 text-destructive" />
+            Habits to Break
           </h3>
-          <div className="grid md:grid-cols-2 gap-3">
-            {recap.actionable_advice.map((advice, index) => (
-              <div key={index} className="flex items-start gap-3 p-4 rounded-lg bg-muted/30 border border-accent/20">
-                <div className="w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-xs font-bold text-accent">{index + 1}</span>
+          <div className="space-y-6">
+            {recap.habits_to_break.map((habit, index) => (
+              <div key={index} className="p-6 rounded-lg bg-muted/30 border border-destructive/20">
+                <div className="flex items-start gap-5">
+                  <div className="w-8 h-8 rounded-full bg-destructive/20 flex items-center justify-center flex-shrink-0 mt-1">
+                    <span className="text-sm font-bold text-destructive">{index + 1}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-semibold text-foreground mb-3">{habit.bad_habit}</h4>
+                    <p className="text-base text-foreground mb-4 leading-relaxed">
+                      <strong>Evidence:</strong> {habit.evidence}
+                    </p>
+                    <p className="text-base text-chart-2 mb-3 leading-relaxed">
+                      <strong>Replace with:</strong> {habit.replacement_habit}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      <strong>Track:</strong> {habit.tracking_metric}
+                    </p>
+                  </div>
                 </div>
-                <span className="text-sm text-foreground leading-relaxed">{advice}</span>
               </div>
             ))}
           </div>
         </motion.div>
       )}
 
-      {/* Sección de drills de mejora adicionales si hay más de 1 mejora */}
-      {recap.improvements && recap.improvements.length > 1 && (
+      {/* Daily Practice Routine Section */}
+      {recap.daily_practice_routine && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-8 p-6 rounded-2xl bg-card/50 border border-border/50"
+          className="mt-16 p-10 rounded-2xl bg-card/50 border border-border/50"
         >
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <Target className="w-5 h-5 text-chart-4" />
-            All Training Drills
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <HelpCircle className="w-4 h-4 text-muted-foreground hover:text-primary cursor-help" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{insightTooltips.improvement}</p>
-              </TooltipContent>
-            </Tooltip>
+          <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
+            <BookOpen className="w-8 h-8 text-accent" />
+            Daily Practice Routine
           </h3>
-          <div className="space-y-3">
-            {recap.improvements.slice(1).map((improvement, index) => (
-              <div key={index} className="p-4 rounded-lg bg-muted/30 border border-border/30">
-                <h4 className="font-semibold text-foreground mb-2 capitalize flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-chart-4" />
-                  {improvement.issue}
-                </h4>
-                <p className="text-muted-foreground text-sm pl-6">
-                  <strong>Training Drill:</strong> {improvement.drill}
-                </p>
-              </div>
-            ))}
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="p-6 rounded-lg bg-muted/30">
+              <h4 className="text-lg font-semibold text-primary mb-4">🔥 Warm-up</h4>
+              <p className="text-base text-foreground leading-relaxed">{recap.daily_practice_routine.warm_up}</p>
+            </div>
+            <div className="p-6 rounded-lg bg-muted/30">
+              <h4 className="text-lg font-semibold text-chart-3 mb-4">⚡ Skill Drill</h4>
+              <p className="text-base text-foreground leading-relaxed">{recap.daily_practice_routine.skill_drill}</p>
+            </div>
+            <div className="p-6 rounded-lg bg-muted/30">
+              <h4 className="text-lg font-semibold text-accent mb-4">🎯 Ranked Focus</h4>
+              <p className="text-base text-foreground leading-relaxed">{recap.daily_practice_routine.ranked_focus}</p>
+            </div>
+            <div className="p-6 rounded-lg bg-muted/30">
+              <h4 className="text-lg font-semibold text-secondary mb-4">📝 Post-Game</h4>
+              <p className="text-base text-foreground leading-relaxed">{recap.daily_practice_routine.post_game}</p>
+            </div>
           </div>
         </motion.div>
       )}

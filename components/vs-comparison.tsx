@@ -456,7 +456,7 @@ export function VsComparison({ summary, playerName = "You", topChampion, recap }
                                   </TooltipTrigger>
                                   <TooltipContent>
                                     <p className="max-w-xs text-center">
-                                      {stat.label === "Win Rate" && "Porcentaje de victorias. Mayor es mejor"}
+                                      {stat.label === "Win Rate" && "Win percentage. The higher the better"}
                                       {stat.label === "KDA" && "Kill/Death/Assist ratio. 2.0+ is excellent"}
                                       {stat.label === "Kills" && "Average eliminations per game"}
                                       {stat.label === "Deaths" && "Average deaths per game. Lower is better"}

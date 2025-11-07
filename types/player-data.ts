@@ -38,18 +38,54 @@ export interface Summary {
 }
 
 export interface Recap {
-  strengths: string
-  improvements: {
-    issue: string
-    drill: string
-  }[]
-  next_match_tip: string
-  confidence: string
-  style?: string
-  trends?: string[]
-  recommended_roles?: string[]
-  recommended_champions?: string[]
-  actionable_advice?: string[]
+  executive_summary: string
+  win_condition_analysis: {
+    what_player_does_well_in_wins: string[]
+    what_goes_wrong_in_losses: string[]
+    key_difference: string
+  }
+  skill_ceiling_assessment: {
+    current_level: string
+    mechanical_ceiling: string
+    game_knowledge_ceiling: string
+    limiting_factor: string
+    realistic_peak: string
+  }
+  improvement_roadmap: {
+    immediate_priority: {
+      focus: string
+      reason: string
+      expected_result: string
+      timeline: string
+    }
+    next_priorities: Array<{
+      focus: string
+      reason: string
+      timeline: string
+    }>
+  }
+  personalized_champion_recommendations: Array<{
+    champion: string
+    fit_score: string
+    why_good_fit: string
+    learning_curve: string
+    expected_win_rate: string
+  }>
+  habits_to_break: Array<{
+    bad_habit: string
+    evidence: string
+    replacement_habit: string
+    tracking_metric: string
+  }>
+  daily_practice_routine: {
+    warm_up: string
+    skill_drill: string
+    ranked_focus: string
+    post_game: string
+  }
+  red_flags: string[]
+  green_flags: string[]
+  coach_notes: string
 }
 
 export interface PlayerData {

@@ -1,6 +1,8 @@
 import { EnhancedTooltip } from "@/components/ui/enhanced-tooltip"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Info } from "lucide-react"
+import { AnimatedStat } from "@/components/animated-stat"
+import { motion } from "framer-motion"
 
 interface StatsOverviewProps {
   summary: {
@@ -25,35 +27,53 @@ export function StatsOverview({ summary }: StatsOverviewProps) {
   if (!summary) return null
 
   return (
-    <section className="container mx-auto px-4">
-      <h2 className="text-3xl font-bold mb-8 mt-6 text-center">General Overview</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 max-w-7xl mx-auto">
-        <Stat 
-          label="Winrate" 
-          value={`${(summary.win_rate * 100).toFixed(0)}%`}
-          tooltip={statsTooltips.winrate}
-        />
-        <Stat 
-          label="KDA" 
-          value={summary.avg_kda.toFixed(2)}
-          tooltip={statsTooltips.kda}
-        />
-        <Stat 
-          label="CS/min" 
-          value={summary.avg_cs_per_min.toFixed(2)}
-          tooltip={statsTooltips.cs}
-        />
-        <Stat 
-          label="Damage/min" 
-          value={summary.avg_dpm.toFixed(0)}
-          tooltip={statsTooltips.damage}
-        />
-        <Stat 
-          label="Gold" 
-          value={summary.avg_gold.toFixed(0)}
-          tooltip={statsTooltips.gold}
-        />
-      </div>
+    <section className="container mx-auto px-4 py-16">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <h2 className="text-3xl font-bold mb-12 text-center gradient-text">Performance Overview</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
+          <AnimatedStat
+            label="Win Rate"
+            value={Math.round(summary.win_rate * 100)}
+            suffix="%"
+            icon="🏆"
+            color="primary"
+            duration={2}
+          />
+          <AnimatedStat
+            label="KDA Ratio"
+            value={Math.round(summary.avg_kda * 100) / 100}
+            icon="⚔️"
+            color="accent"
+            duration={2.2}
+          />
+          <AnimatedStat
+            label="CS/min"
+            value={Math.round(summary.avg_cs_per_min * 100) / 100}
+            icon="⚡"
+            color="secondary"
+            duration={2.4}
+          />
+          <AnimatedStat
+            label="Damage/min"
+            value={Math.round(summary.avg_dpm)}
+            icon="💥"
+            color="chart-1"
+            duration={2.6}
+          />
+          <AnimatedStat 
+            label="Avg Gold" 
+            value={Math.round(summary.avg_gold)}
+            icon="💰"
+            color="chart-2"
+            duration={2.8}
+          />
+        </div>
+      </motion.div>
     </section>
   )
 }

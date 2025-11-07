@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { Sparkles, HelpCircle, TrendingUp, Crown, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { AnimatedStat } from "@/components/animated-stat"
 
 interface HeroSectionProps {
   summary: {
@@ -196,7 +197,7 @@ export function HeroSection({ summary, topChampion, recap }: HeroSectionProps) {
           </motion.div>
         )}
 
-        {/* Stats preview with stagger animation */}
+        {/* Enhanced Stats preview with animated components */}
         {summary && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -204,52 +205,30 @@ export function HeroSection({ summary, topChampion, recap }: HeroSectionProps) {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="mt-16 grid grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-6"
           >
-            {[
-              { 
-                label: "Games", 
-                value: summary.games.toString(), 
-                color: "primary",
-                tooltip: `You've played ${summary.games} analyzed games. More games = more precise analysis`
-              },
-              { 
-                label: "Win Rate", 
-                value: `${(summary.win_rate * 100).toFixed(0)}%`, 
-                color: "accent",
-                tooltip: `Your win percentage. 60%+ = Excellent, 50-60% = Good, below 50% = Needs improvement`
-              },
-              { 
-                label: "Average KDA", 
-                value: summary.avg_kda.toFixed(2), 
-                color: "secondary",
-                tooltip: `Average KDA (Kills+Assists/Deaths). 2.0+ = Excellent, 1.0-2.0 = Average, below 1.0 = Practice survival`
-              },
-            ].map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.9 + i * 0.1 }}
-            >
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="p-8 rounded-2xl glass-card hover:scale-105 transition-transform cursor-pointer">
-                    <div className={`text-4xl md:text-5xl font-black text-${stat.color} mb-2`}>{stat.value}</div>
-                    <div className="flex items-center justify-center gap-1">
-                      <div className="text-sm text-muted-foreground uppercase tracking-wider">{stat.label}</div>
-                      <HelpCircle className="w-3 h-3 text-muted-foreground/50" />
-                    </div>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-center">{stat.tooltip}</p>
-                </TooltipContent>
-              </Tooltip>
-            </motion.div>
-          ))}
+            <AnimatedStat
+              label="Games Played"
+              value={summary.games}
+              icon="🎮"
+              color="primary"
+              duration={2}
+            />
+            <AnimatedStat
+              label="Win Rate"
+              value={Math.round(summary.win_rate * 100)}
+              suffix="%"
+              icon="📈"
+              color="accent"
+              duration={2.2}
+            />
+            <AnimatedStat
+              label="Average KDA"
+              value={Math.round(summary.avg_kda * 100) / 100}
+              icon="⚔️"
+              color="secondary"
+              duration={2.4}
+            />
           </motion.div>
-        )}
-
-        {/* Nueva sección para tendencias y recomendaciones */}
+        )}        {/* Nueva sección para tendencias y recomendaciones */}
         {recap && (recap.trends || recap.recommended_champions) && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}

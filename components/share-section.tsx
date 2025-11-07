@@ -47,7 +47,6 @@ export function ShareSection({ recap, playerName = "Summoner", summary, matches 
     `• ${summary ? Math.round(summary.win_rate * 100) : 0}% Win Rate (${summary?.games || 0} games)\n` +
     `• ${summary?.avg_kda.toFixed(1) || 0} Average KDA\n` +
     `• Play Style: ${recap.style ? recap.style.charAt(0).toUpperCase() + recap.style.slice(1) : 'Analyzed'}\n` +
-    `• Confidence Level: ${recap.confidence.charAt(0).toUpperCase() + recap.confidence.slice(1)}\n` +
     (recap.recommended_roles && recap.recommended_roles.length > 0 ? 
       `• Best Roles: ${recap.recommended_roles.join(', ')}\n` : '') +
     `• Key Strengths: ${recap.strengths}\n` +

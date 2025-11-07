@@ -120,6 +120,15 @@ export function SummonerSearch({ onDataFetched }: SummonerSearchProps) {
             <p className="text-sm text-muted-foreground mt-4 text-center">
               For example: HideOnBush#KR1, Faker#KR1
             </p>
+            
+            <div className="mt-6 text-center">
+              <a 
+                href="/demo" 
+                className="inline-flex items-center px-4 py-2 rounded-xl bg-gradient-to-r from-secondary/10 to-accent/10 border border-secondary/20 hover:border-secondary/40 transition-all text-sm font-medium hover:scale-105"
+              >
+                🎨 View Enhanced UI Demo
+              </a>
+            </div>
 
             {error && (
               <motion.div
